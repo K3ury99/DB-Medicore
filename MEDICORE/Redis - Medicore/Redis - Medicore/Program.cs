@@ -1,0 +1,334 @@
+﻿using System;
+using StackExchange.Redis;
+
+namespace Redis
+{
+    // Utilizando RedisDB.
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var redis = ConnectionMultiplexer.Connect("localhost");
+            var db = redis.GetDatabase();
+
+            // Bucle para que vuelva a empezar el menu
+            while (true)
+            {
+                Console.Clear();
+
+                Console.WriteLine("""
+                    -------------------------------------
+                            Bienvenido a Medicore, 
+                      Seleccione una de nuestras tablas.
+                    -------------------------------------
+                    """);
+                Console.WriteLine("  1. Pacientes");
+                Console.WriteLine("  2. Médicos");
+                Console.WriteLine("  3. Citas");
+                Console.WriteLine("  4. Hospitalizaciones");
+                Console.WriteLine("  5. Cirugías");
+                Console.WriteLine("  6. Resultados de Laboratorio");
+                Console.WriteLine("  7. Facturas");
+                Console.WriteLine("  8. Prescripciones");
+                Console.WriteLine("  0. Salir");
+                Console.WriteLine("-------------------------------------");
+                Console.Write("\nOpción (Ej.1): ");
+                var opcion = Console.ReadLine();
+
+                if (opcion == "0")
+                {
+                    break;
+                }
+
+                Console.Write("Ingresa el identificador (Ej.1): ");
+                
+                var id = Console.ReadLine();
+                Console.WriteLine("");
+
+                string hashKey = null;
+
+                switch (opcion)
+                {
+                    case "1":
+                        hashKey = $"pacientes:{id}";
+                        break;
+                    case "2":
+                        hashKey = $"medicos:{id}";
+                        break;
+                    case "3":
+                        hashKey = $"citas:{id}";
+                        break;
+                    case "4":
+                        hashKey = $"hospitalizaciones:{id}";
+                        break;
+                    case "5":
+                        hashKey = $"cirugias:{id}";
+                        break;
+                    case "6":
+                        hashKey = $"resultadosLaboratorio:{id}";
+                        break;
+                    case "7":
+                        hashKey = $"facturas:{id}";
+                        break;
+                    case "8":
+                        hashKey = $"prescripciones:{id}";
+                        break;
+                    default:
+                        Console.WriteLine("Opción no válida.");
+                        continue;
+                }
+
+                var hashEntries = db.HashGetAll(hashKey);
+
+                if (hashEntries.Length == 0)
+                {
+                    Console.WriteLine("No se encontraron datos para la clave proporcionada.");
+                }
+                else
+                {
+                    Console.WriteLine($"Datos para {hashKey}");
+                    foreach (var entry in hashEntries)
+                    {
+                        Console.WriteLine($"{entry.Name}: {entry.Value}");
+                    }
+                }
+
+                Console.WriteLine("\nPresiona una tecla para continuar...");
+                Console.ReadKey();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Insertar datos en Redis para Pacientes
+                var pacienteId = 1; // Usar identificador simple para paciente
+                var pacientesHash = $"pacientes:{pacienteId}";
+                var pacientesData = new HashEntry[]
+                {
+                new HashEntry("Nombre", "Juan"),
+                new HashEntry("Apellido", "Pérez"),
+                new HashEntry("FechaNacimiento", "1980-01-01"),
+                new HashEntry("Genero", "M"),
+                new HashEntry("Direccion", "Calle Falsa 123"),
+                new HashEntry("Telefono", "123456789"),
+                new HashEntry("Correo", "juan@example.com"),
+                new HashEntry("SeguroMedico", "Seguro XYZ"),
+                new HashEntry("NumeroSeguroSocial", "123-45-6789")
+                };
+                db.HashSet(pacientesHash, pacientesData);
+
+                // Insertar datos en Redis para Medicos
+                var medicoId = 1; // Usar identificador simple para médico
+                var medicosHash = $"medicos:{medicoId}";
+                var medicosData = new HashEntry[]
+                {
+                new HashEntry("Nombre", "Dr. Ana"),
+                new HashEntry("Apellido", "López"),
+                new HashEntry("Especialidad", "Cardiología"),
+                new HashEntry("Telefono", "987654321"),
+                new HashEntry("Correo", "ana@example.com")
+                };
+                db.HashSet(medicosHash, medicosData);
+
+                // Insertar datos en Redis para Citas
+                var citaId = 1; // Usar identificador simple para cita
+                var citasHash = $"citas:{citaId}";
+                var citasData = new HashEntry[]
+                {
+                new HashEntry("Paciente.Nombre", "Juan"),
+                new HashEntry("Paciente.Apellido", "Pérez"),
+                new HashEntry("Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Paciente.Genero", "M"),
+                new HashEntry("Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Paciente.Telefono", "123456789"),
+                new HashEntry("Paciente.Correo", "juan@example.com"),
+                new HashEntry("Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Medico.Nombre", "Dr. Ana"),
+                new HashEntry("Medico.Apellido", "López"),
+                new HashEntry("Medico.Especialidad", "Cardiología"),
+                new HashEntry("Medico.Telefono", "987654321"),
+                new HashEntry("Medico.Correo", "ana@example.com"),
+                new HashEntry("FechaHora", "2023-07-18T10:00:00Z"),
+                new HashEntry("Motivo", "Consulta general")
+                };
+                db.HashSet(citasHash, citasData);
+
+                // Insertar datos en Redis para Hospitalizaciones
+                var hospitalizacionId = 1; // Usar identificador simple para hospitalización
+                var hospitalizacionesHash = $"hospitalizaciones:{hospitalizacionId}";
+                var hospitalizacionesData = new HashEntry[]
+                {
+                new HashEntry("Paciente.Nombre", "Juan"),
+                new HashEntry("Paciente.Apellido", "Pérez"),
+                new HashEntry("Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Paciente.Genero", "M"),
+                new HashEntry("Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Paciente.Telefono", "123456789"),
+                new HashEntry("Paciente.Correo", "juan@example.com"),
+                new HashEntry("Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Medico.Nombre", "Dr. Ana"),
+                new HashEntry("Medico.Apellido", "López"),
+                new HashEntry("Medico.Especialidad", "Cardiología"),
+                new HashEntry("Medico.Telefono", "987654321"),
+                new HashEntry("Medico.Correo", "ana@example.com"),
+                new HashEntry("FechaIngreso", "2023-07-01T08:00:00Z"),
+                new HashEntry("FechaAlta", "2023-07-10T10:00:00Z"),
+                new HashEntry("Motivo", "Observación")
+                };
+                db.HashSet(hospitalizacionesHash, hospitalizacionesData);
+
+                // Insertar datos en Redis para Cirugias
+                var cirugiaId = 1; // Usar identificador simple para cirugía
+                var cirugiasHash = $"cirugias:{cirugiaId}";
+                var cirugiasData = new HashEntry[]
+                {
+                new HashEntry("Paciente.Nombre", "Juan"),
+                new HashEntry("Paciente.Apellido", "Pérez"),
+                new HashEntry("Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Paciente.Genero", "M"),
+                new HashEntry("Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Paciente.Telefono", "123456789"),
+                new HashEntry("Paciente.Correo", "juan@example.com"),
+                new HashEntry("Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Medico.Nombre", "Dr. Ana"),
+                new HashEntry("Medico.Apellido", "López"),
+                new HashEntry("Medico.Especialidad", "Cardiología"),
+                new HashEntry("Medico.Telefono", "987654321"),
+                new HashEntry("Medico.Correo", "ana@example.com"),
+                new HashEntry("FechaHora", "2023-07-20T09:00:00Z"),
+                new HashEntry("TipoCirugia", "Apendicectomía"),
+                new HashEntry("Descripcion", "Extirpación del apéndice")
+                };
+                db.HashSet(cirugiasHash, cirugiasData);
+
+                // Insertar datos en Redis para ResultadosLaboratorio
+                var resultadosLaboratorioId = 1; // Usar identificador simple para resultados de laboratorio
+                var resultadosLaboratorioHash = $"resultadosLaboratorio:{resultadosLaboratorioId}";
+                var resultadosLaboratorioData = new HashEntry[]
+                {
+                new HashEntry("Paciente.Nombre", "Juan"),
+                new HashEntry("Paciente.Apellido", "Pérez"),
+                new HashEntry("Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Paciente.Genero", "M"),
+                new HashEntry("Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Paciente.Telefono", "123456789"),
+                new HashEntry("Paciente.Correo", "juan@example.com"),
+                new HashEntry("Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Medico.Nombre", "Dr. Ana"),
+                new HashEntry("Medico.Apellido", "López"),
+                new HashEntry("Medico.Especialidad", "Cardiología"),
+                new HashEntry("Medico.Telefono", "987654321"),
+                new HashEntry("Medico.Correo", "ana@example.com"),
+                new HashEntry("Laboratorio.Nombre", "Laboratorio ABC"),
+                new HashEntry("Laboratorio.Direccion", "Calle Verdadera 456"),
+                new HashEntry("Laboratorio.Telefono", "555123456"),
+                new HashEntry("Laboratorio.Correo", "contacto@lababc.com"),
+                new HashEntry("Fecha", "2023-07-15T10:00:00Z"),
+                new HashEntry("TipoPrueba", "Análisis de sangre"),
+                new HashEntry("Resultados", "Todo normal")
+                };
+                db.HashSet(resultadosLaboratorioHash, resultadosLaboratorioData);
+
+                // Insertar datos en Redis para Facturas
+                var facturaId = 1; // Usar identificador simple para factura
+                var facturasHash = $"facturas:{facturaId}";
+                var facturasData = new HashEntry[]
+                {
+                new HashEntry("Paciente.Nombre", "Juan"),
+                new HashEntry("Paciente.Apellido", "Pérez"),
+                new HashEntry("Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Paciente.Genero", "M"),
+                new HashEntry("Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Paciente.Telefono", "123456789"),
+                new HashEntry("Paciente.Correo", "juan@example.com"),
+                new HashEntry("Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Fecha", "2023-07-18T12:00:00Z"),
+                new HashEntry("MontoTotal", "200.50"),
+                new HashEntry("Descripcion", "Consulta y análisis de laboratorio")
+                };
+                db.HashSet(facturasHash, facturasData);
+
+                // Insertar datos en Redis para Prescripciones
+                var prescripcionId = 1; // Usar identificador simple para prescripción
+                var prescripcionesHash = $"prescripciones:{prescripcionId}";
+                var prescripcionesData = new HashEntry[]
+                {
+                new HashEntry("Cita.Paciente.Nombre", "Juan"),
+                new HashEntry("Cita.Paciente.Apellido", "Pérez"),
+                new HashEntry("Cita.Paciente.FechaNacimiento", "1980-01-01"),
+                new HashEntry("Cita.Paciente.Genero", "M"),
+                new HashEntry("Cita.Paciente.Direccion", "Calle Falsa 123"),
+                new HashEntry("Cita.Paciente.Telefono", "123456789"),
+                new HashEntry("Cita.Paciente.Correo", "juan@example.com"),
+                new HashEntry("Cita.Paciente.SeguroMedico", "Seguro XYZ"),
+                new HashEntry("Cita.Paciente.NumeroSeguroSocial", "123-45-6789"),
+                new HashEntry("Cita.Medico.Nombre", "Dr. Ana"),
+                new HashEntry("Cita.Medico.Apellido", "López"),
+                new HashEntry("Cita.Medico.Especialidad", "Cardiología"),
+                new HashEntry("Cita.Medico.Telefono", "987654321"),
+                new HashEntry("Cita.Medico.Correo", "ana@example.com"),
+                new HashEntry("FechaPrescripcion", "2023-07-18T12:00:00Z"),
+                new HashEntry("Medicamento.Nombre", "Paracetamol"),
+                new HashEntry("Medicamento.Descripcion", "Analgésico y antipirético"),
+                new HashEntry("Medicamento.Precio", "5.50"),
+                new HashEntry("Dosis", "1 tableta cada 8 horas"),
+                new HashEntry("Duracion", "7 días"),
+                new HashEntry("Instrucciones", "Tomar después de las comidas")
+                };
+                db.HashSet(prescripcionesHash, prescripcionesData);
+
+                Console.WriteLine("Datos insertados en RedisDB.");
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        // Esta es la configuracion de RedisDB.
+        public class RedisDB
+        {
+            private static Lazy<ConnectionMultiplexer> _lazyConnection;
+
+            public static ConnectionMultiplexer Connection
+            {
+                get
+                {
+                    return _lazyConnection.Value;
+                }
+            }
+
+            static RedisDB()
+            {
+                _lazyConnection = new Lazy<ConnectionMultiplexer>(() =>
+
+                ConnectionMultiplexer.Connect("localhost")
+                );
+            }
+        }
+    }
+}

@@ -1,0 +1,234 @@
+-------------------------------Formato de MongoDB
+
+Pacientes-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d1d190ca65c7c9d006f1"
+  },
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+}
+
+Medicos-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d23490ca65c7c9d006f4"
+  },
+    "Nombre": "Dr. Ana",
+    "Apellido": "López",
+    "Especialidad": "Cardiología",
+    "Telefono": "987654321",
+    "Correo": "ana@example.com"
+}
+
+Citas-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d26790ca65c7c9d006f8"
+  },
+"Paciente": {
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+  },
+  "Medico": {
+    "Nombre": "Dr. Ana",
+    "Apellido": "López",
+    "Especialidad": "Cardiología",
+    "Telefono": "987654321",
+    "Correo": "ana@example.com"
+  },
+  "FechaHora": {
+    "$date": "2023-07-18T10:00:00Z"
+  },
+  "Motivo": "Consulta general"
+}
+
+
+Hospitalizaciones-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d3b490ca65c7c9d006fa"
+  },
+  "Paciente": {
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+  },
+  "Medico": {
+    "Nombre": "Dr. Ana",
+    "Apellido": "López",
+    "Especialidad": "Cardiología",
+    "Telefono": "987654321",
+    "Correo": "ana@example.com"
+  },
+  "FechaIngreso": {
+    "$date": "2023-07-01T08:00:00Z"
+  },
+  "FechaAlta": {
+    "$date": "2023-07-10T10:00:00Z"
+  },
+  "Motivo": "Observación"
+}
+
+Cirugias-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d40290ca65c7c9d006fc"
+  },
+  "Paciente": {
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+  },
+  "Medico": {
+    "Nombre": "Dr. Ana",
+    "Apellido": "López",
+    "Especialidad": "Cardiología",
+    "Telefono": "987654321",
+    "Correo": "ana@example.com"
+  },
+  "FechaHora": {
+    "$date": "2023-07-20T09:00:00Z"
+  },
+  "TipoCirugia": "Apendicectomía",
+  "Descripcion": "Extirpación del apéndice"
+}
+
+ResultadosLaboratorio-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d42890ca65c7c9d006fe"
+  },
+  "Paciente": {
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+  },
+  "Medico": {
+    "Nombre": "Dr. Ana",
+    "Apellido": "López",
+    "Especialidad": "Cardiología",
+    "Telefono": "987654321",
+    "Correo": "ana@example.com"
+  },
+  "Laboratorio": {
+    "Nombre": "Laboratorio ABC",
+    "Direccion": "Calle Verdadera 456",
+    "Telefono": "555123456",
+    "Correo": "contacto@lababc.com"
+  },
+  "Fecha": {
+    "$date": "2023-07-15T10:00:00Z"
+  },
+  "TipoPrueba": "Análisis de sangre",
+  "Resultados": "Todo normal"
+}
+
+Facturas-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d45590ca65c7c9d00700"
+  },
+  "Paciente": {
+    "Nombre": "Juan",
+    "Apellido": "Pérez",
+    "FechaNacimiento": "1980-01-01",
+    "Genero": "M",
+    "Direccion": "Calle Falsa 123",
+    "Telefono": "123456789",
+    "Correo": "juan@example.com",
+    "SeguroMedico": "Seguro XYZ",
+    "NumeroSeguroSocial": "123-45-6789"
+  },
+  "Fecha": {
+    "$date": "2023-07-18T12:00:00Z"
+  },
+  "MontoTotal": 200.50,
+  "Descripcion": "Consulta y análisis de laboratorio"
+}
+
+Prescripciones-------------------------------
+
+{
+  "_id": {
+    "$oid": "6699d48090ca65c7c9d00702"
+  },
+  "Cita": {
+    "Paciente": {
+      "Nombre": "Juan",
+      "Apellido": "Pérez",
+      "FechaNacimiento": "1980-01-01",
+      "Genero": "M",
+      "Direccion": "Calle Falsa 123",
+      "Telefono": "123456789",
+      "Correo": "juan@example.com",
+      "SeguroMedico": "Seguro XYZ",
+      "NumeroSeguroSocial": "123-45-6789"
+    },
+    "Medico": {
+      "Nombre": "Dr. Ana",
+      "Apellido": "López",
+      "Especialidad": "Cardiología",
+      "Telefono": "987654321",
+      "Correo": "ana@example.com"
+    },
+    "FechaHora": {
+      "$date": "2023-07-18T10:00:00Z"
+    },
+    "Motivo": "Consulta general"
+  },
+  "Medicamento": {
+    "Nombre": "Paracetamol",
+    "Descripcion": "Analgésico y antipirético",
+    "Precio": 5.50
+  },
+  "Dosis": "1 tableta cada 8 horas",
+  "Duracion": 7,
+  "Instrucciones": "Tomar después de las comidas"
+}
+
+
+
+
+
+
+

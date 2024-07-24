@@ -1,0 +1,41 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Keury\\Desktop\\BD-Medicore\\MEDICORE\\Redis - Medicore\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3DC36DF2-0A18-4F8E-9A1E-EF3E530097D3}|Redis - Medicore\\Redis - Medicore.csproj|c:\\users\\keury\\desktop\\bd-medicore\\medicore\\redis - medicore\\redis - medicore\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3DC36DF2-0A18-4F8E-9A1E-EF3E530097D3}|Redis - Medicore\\Redis - Medicore.csproj|solutionrelative:redis - medicore\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\Keury\\Desktop\\BD-Medicore\\MEDICORE\\Redis - Medicore\\Redis - Medicore\\Program.cs",
+              "RelativeDocumentMoniker": "Redis - Medicore\\Program.cs",
+              "ToolTip": "C:\\Users\\Keury\\Desktop\\BD-Medicore\\MEDICORE\\Redis - Medicore\\Redis - Medicore\\Program.cs",
+              "RelativeToolTip": "Redis - Medicore\\Program.cs",
+              "ViewState": "AQIAAB4BAAAAAAAAAAAowE0BAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-24T20:17:08.366Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

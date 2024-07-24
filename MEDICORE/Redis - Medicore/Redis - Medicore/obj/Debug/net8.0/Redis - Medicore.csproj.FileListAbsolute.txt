@@ -1,0 +1,20 @@
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.csproj.AssemblyReference.cache
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.AssemblyInfoInputs.cache
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.AssemblyInfo.cs
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.csproj.CoreCompileInputs.cache
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Redis - Medicore.exe
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Redis - Medicore.deps.json
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Redis - Medicore.runtimeconfig.json
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Redis - Medicore.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Redis - Medicore.pdb
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\Pipelines.Sockets.Unofficial.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\StackExchange.Redis.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\bin\Debug\net8.0\System.IO.Pipelines.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - .AB03FA15.Up2Date
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\refint\Redis - Medicore.dll
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.pdb
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\Redis - Medicore.genruntimeconfig.cache
+C:\Users\Keury\Desktop\Clases\ITLA\4to - Cuatrimestre\BD Avanzada\Scripts\BD Medicore\Redis - Medicore\Redis - Medicore\obj\Debug\net8.0\ref\Redis - Medicore.dll

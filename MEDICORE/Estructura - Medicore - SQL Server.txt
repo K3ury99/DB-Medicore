@@ -1,0 +1,821 @@
+-- // Base de datos que debe usarse.
+Use Medicore;
+
+-- // Orden en que deben crearse las tablas para que no hayan conflictos:
+-- 1. Departamentos.
+-- 2. Pacientes.
+-- 3. Medicos.
+-- 4. Laboratorios.
+-- 5. Empleados.
+-- 6. Tratamientos.
+-- 7. Medicamentos.
+-- 8. Citas.
+-- 9. Facturas.
+-- 10. Hospitalizaciones.
+-- 11. Cirugias.
+-- 12. ResultadosLaboratorio.
+-- 13. Prescripciones.
+-- 14. Pagos.
+
+-- // TABLAS DE ESTA BD.
+CREATE TABLE Departamentos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion TEXT
+);
+
+CREATE TABLE Pacientes (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    FechaNacimiento DATE NOT NULL,
+    Genero CHAR(1) CHECK (Genero IN ('M', 'F')) NOT NULL,
+    Direccion VARCHAR(255),
+    Telefono VARCHAR(20),
+    Correo VARCHAR(100),
+    SeguroMedico VARCHAR(100),
+    NumeroSeguroSocial VARCHAR(20)
+);
+
+CREATE TABLE Medicos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    Especialidad VARCHAR(100) NOT NULL,
+    Telefono VARCHAR(20),
+    Correo VARCHAR(100)
+);
+
+CREATE TABLE Laboratorios (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Direccion VARCHAR(255),
+    Telefono VARCHAR(20),
+    Correo VARCHAR(100)
+);
+
+CREATE TABLE Empleados (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellido VARCHAR(100) NOT NULL,
+    FechaNacimiento DATE NOT NULL,
+    Genero CHAR(1) CHECK (Genero IN ('M', 'F')) NOT NULL,
+    Direccion VARCHAR(255),
+    Telefono VARCHAR(20),
+    Correo VARCHAR(100),
+    DepartamentoID INT NOT NULL,
+    Cargo VARCHAR(100) NOT NULL,
+    FOREIGN KEY (DepartamentoID) REFERENCES Departamentos(ID)
+);
+
+CREATE TABLE Tratamientos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion TEXT
+);
+
+CREATE TABLE Medicamentos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Descripcion TEXT,
+    Precio DECIMAL(10, 2) NOT NULL
+);
+
+CREATE TABLE Citas (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT NOT NULL,
+    MedicoID INT NOT NULL,
+    FechaHora DATETIME NOT NULL,
+    Motivo TEXT,
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(ID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(ID)
+);
+
+CREATE TABLE Facturas (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT NOT NULL,
+    Fecha DATETIME NOT NULL,
+    MontoTotal DECIMAL(10, 2) NOT NULL,
+    Descripcion TEXT,
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(ID)
+);
+
+CREATE TABLE Hospitalizaciones (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT NOT NULL,
+    MedicoID INT NOT NULL,
+    FechaIngreso DATETIME NOT NULL,
+    FechaAlta DATETIME,
+    Motivo TEXT,
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(ID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(ID)
+);
+
+CREATE TABLE Cirugias (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT NOT NULL,
+    MedicoID INT NOT NULL,
+    FechaHora DATETIME NOT NULL,
+    TipoCirugia VARCHAR(100) NOT NULL,
+    Descripcion TEXT,
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(ID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(ID)
+);
+
+CREATE TABLE ResultadosLaboratorio (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT NOT NULL,
+    MedicoID INT NOT NULL,
+    LaboratorioID INT NOT NULL,
+    Fecha DATETIME NOT NULL,
+    TipoPrueba VARCHAR(100) NOT NULL,
+    Resultados TEXT,
+    FOREIGN KEY (PacienteID) REFERENCES Pacientes(ID),
+    FOREIGN KEY (MedicoID) REFERENCES Medicos(ID),
+    FOREIGN KEY (LaboratorioID) REFERENCES Laboratorios(ID)
+);
+
+CREATE TABLE Prescripciones (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    CitaID INT NOT NULL,
+    MedicamentoID INT NOT NULL,
+    Dosis VARCHAR(100) NOT NULL,
+    Duracion INT NOT NULL, -- en días
+    Instrucciones TEXT,
+    FOREIGN KEY (CitaID) REFERENCES Citas(ID),
+    FOREIGN KEY (MedicamentoID) REFERENCES Medicamentos(ID)
+);
+
+CREATE TABLE Pagos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    FacturaID INT NOT NULL,
+    FechaPago DATETIME NOT NULL,
+    MontoPagado DECIMAL(10, 2) NOT NULL,
+    MetodoPago VARCHAR(100) NOT NULL,
+    FOREIGN KEY (FacturaID) REFERENCES Facturas(ID)
+);
+
+-- Esta BD cumple con todas las formas normales.
+-- Primera Forma Normal (1FN): Cumple.
+-- Segunda Forma Normal (2FN): Cumple. 
+-- Tercera Forma Normal (3FN): Cumple. 
+-- BCNF: Cumple.
+-- Cuarta Forma Normal (4FN): Cumple.
+-- Quinta Forma Normal (5FN): Cumple.
+
+-- /// INSERCION DE LOS DATOS EN LAS TABLAS PARA HACER LAS CONSULTAS.
+INSERT INTO Pacientes (Nombre, Apellido, FechaNacimiento, Genero, Direccion, Telefono, Correo, SeguroMedico, NumeroSeguroSocial) VALUES
+('Juan', 'Perez', '1985-05-20', 'M', 'Calle Falsa 123', '555-1234', 'juan.perez@example.com', 'Seguro A', '123-45-6789'),
+('Maria', 'Gomez', '1990-07-15', 'F', 'Avenida Siempre Viva 742', '555-5678', 'maria.gomez@example.com', 'Seguro B', '987-65-4321'),
+('Pedro', 'Lopez', '1978-12-03', 'M', 'Boulevard Los Angeles 300', '555-8765', 'pedro.lopez@example.com', 'Seguro A', '321-54-9876'),
+('Ana', 'Martinez', '1983-09-10', 'F', 'Calle de la Rosa 55', '555-2345', 'ana.martinez@example.com', 'Seguro C', '654-32-1987'),
+('Luis', 'Hernandez', '1992-01-25', 'M', 'Avenida Central 8', '555-6789', 'luis.hernandez@example.com', 'Seguro B', '789-12-3456'),
+('Elena', 'Diaz', '1988-11-12', 'F', 'Calle Luna 7', '555-3456', 'elena.diaz@example.com', 'Seguro A', '432-65-0987'),
+('Carlos', 'Garcia', '1975-08-19', 'M', 'Avenida Sol 200', '555-4321', 'carlos.garcia@example.com', 'Seguro C', '876-54-3210'),
+('Sofia', 'Vega', '1995-04-05', 'F', 'Calle Estrella 1', '555-7654', 'sofia.vega@example.com', 'Seguro A', '210-98-7654'),
+('Miguel', 'Torres', '1980-03-17', 'M', 'Boulevard Oeste 99', '555-5432', 'miguel.torres@example.com', 'Seguro B', '543-21-0987'),
+('Lucia', 'Ramos', '1993-06-23', 'F', 'Avenida Este 45', '555-6543', 'lucia.ramos@example.com', 'Seguro C', '987-65-4321'),
+('Javier', 'Molina', '1972-02-28', 'M', 'Calle Norte 67', '555-8765', 'javier.molina@example.com', 'Seguro A', '123-45-6789'),
+('Laura', 'Reyes', '1986-10-14', 'F', 'Avenida Sur 12', '555-1234', 'laura.reyes@example.com', 'Seguro B', '321-54-9876'),
+('Fernando', 'Jimenez', '1991-05-22', 'M', 'Boulevard Primavera 6', '555-9876', 'fernando.jimenez@example.com', 'Seguro C', '654-32-1987'),
+('Isabel', 'Castro', '1984-07-08', 'F', 'Calle Invierno 44', '555-2345', 'isabel.castro@example.com', 'Seguro A', '789-12-3456'),
+('Raul', 'Ortiz', '1979-11-30', 'M', 'Avenida Verano 77', '555-3456', 'raul.ortiz@example.com', 'Seguro B', '432-65-0987');
+
+INSERT INTO Medicos (Nombre, Apellido, Especialidad, Telefono, Correo) VALUES
+('Ana', 'Fernandez', 'Cardiología', '555-1111', 'ana.fernandez@example.com'),
+('Carlos', 'Mendez', 'Neurología', '555-2222', 'carlos.mendez@example.com'),
+('Elena', 'Salazar', 'Pediatría', '555-3333', 'elena.salazar@example.com'),
+('Javier', 'Gonzalez', 'Dermatología', '555-4444', 'javier.gonzalez@example.com'),
+('Laura', 'Perez', 'Oftalmología', '555-5555', 'laura.perez@example.com'),
+('Luis', 'Martinez', 'Ginecología', '555-6666', 'luis.martinez@example.com'),
+('Maria', 'Ruiz', 'Psiquiatría', '555-7777', 'maria.ruiz@example.com'),
+('Miguel', 'Lopez', 'Oncología', '555-8888', 'miguel.lopez@example.com'),
+('Patricia', 'Torres', 'Traumatología', '555-9999', 'patricia.torres@example.com'),
+('Pedro', 'Ramos', 'Cirugía General', '555-0000', 'pedro.ramos@example.com'),
+('Raul', 'Vega', 'Medicina Interna', '555-1212', 'raul.vega@example.com'),
+('Rosa', 'Hernandez', 'Urología', '555-2323', 'rosa.hernandez@example.com'),
+('Sofia', 'Garcia', 'Endocrinología', '555-3434', 'sofia.garcia@example.com'),
+('Vicente', 'Diaz', 'Neumología', '555-4545', 'vicente.diaz@example.com'),
+('Virginia', 'Jimenez', 'Reumatología', '555-5656', 'virginia.jimenez@example.com');
+
+INSERT INTO Departamentos (Nombre, Descripcion) VALUES
+('Administración', 'Departamento encargado de la administración general del hospital.'),
+('Contabilidad', 'Departamento encargado de la gestión financiera y contable del hospital.'),
+('Recursos Humanos', 'Departamento encargado de la gestión del personal.'),
+('Mantenimiento', 'Departamento encargado del mantenimiento de las instalaciones.'),
+('Seguridad', 'Departamento encargado de la seguridad del hospital.'),
+('Informática', 'Departamento encargado de la gestión de sistemas y tecnología.'),
+('Atención al Cliente', 'Departamento encargado de la atención a los pacientes y sus familias.'),
+('Marketing', 'Departamento encargado de la promoción y publicidad del hospital.'),
+('Investigación', 'Departamento encargado de la investigación médica.'),
+('Farmacia', 'Departamento encargado de la gestión de medicamentos.'),
+('Emergencias', 'Departamento encargado de la atención de urgencias.'),
+('Consultas Externas', 'Departamento encargado de las consultas ambulatorias.'),
+('Hospitalización', 'Departamento encargado de la hospitalización de pacientes.'),
+('Quirófano', 'Departamento encargado de las intervenciones quirúrgicas.'),
+('Radiología', 'Departamento encargado de las pruebas de imagen.');
+
+INSERT INTO Empleados (Nombre, Apellido, FechaNacimiento, Genero, Direccion, Telefono, Correo, DepartamentoID, Cargo) VALUES
+('Juan', 'Lopez', '1980-04-25', 'M', 'Calle Falsa 123', '555-1122', 'juan.lopez@example.com', 1, 'Administrador'),
+('Ana', 'Diaz', '1985-06-15', 'F', 'Avenida Siempre Viva 742', '555-2233', 'ana.diaz@example.com', 2, 'Contadora'),
+('Pedro', 'Martinez', '1978-08-20', 'M', 'Boulevard Los Angeles 300', '555-3344', 'pedro.martinez@example.com', 3, 'Gerente de RRHH'),
+('Maria', 'Hernandez', '1990-11-11', 'F', 'Calle de la Rosa 55', '555-4455', 'maria.hernandez@example.com', 4, 'Técnico de Mantenimiento'),
+('Luis', 'Gonzalez', '1983-01-30', 'M', 'Avenida Central 8', '555-5566', 'luis.gonzalez@example.com', 5, 'Jefe de Seguridad'),
+('Elena', 'Ruiz', '1988-09-05', 'F', 'Calle Luna 7', '555-6677', 'elena.ruiz@example.com', 6, 'Técnico de Sistemas'),
+('Carlos', 'Torres', '1975-02-18', 'M', 'Avenida Sol 200', '555-7788', 'carlos.torres@example.com', 7, 'Atención al Cliente'),
+('Sofia', 'Ramos', '1995-07-23', 'F', 'Calle Estrella 1', '555-8899', 'sofia.ramos@example.com', 8, 'Especialista en Marketing'),
+('Miguel', 'Perez', '1980-03-17', 'M', 'Boulevard Oeste 99', '555-9900', 'miguel.perez@example.com', 9, 'Investigador'),
+('Lucia', 'Garcia', '1993-06-23', 'F', 'Avenida Este 45', '555-1010', 'lucia.garcia@example.com', 10, 'Farmacéutica'),
+('Javier', 'Molina', '1972-02-28', 'M', 'Calle Norte 67', '555-1212', 'javier.molina@example.com', 11, 'Paramédico'),
+('Laura', 'Vega', '1986-10-14', 'F', 'Avenida Sur 12', '555-1313', 'laura.vega@example.com', 12, 'Enfermera'),
+('Fernando', 'Reyes', '1991-05-22', 'M', 'Boulevard Primavera 6', '555-1414', 'fernando.reyes@example.com', 13, 'Doctor'),
+('Isabel', 'Jimenez', '1984-07-08', 'F', 'Calle Invierno 44', '555-1515', 'isabel.jimenez@example.com', 14, 'Cirujana'),
+('Raul', 'Ortiz', '1979-11-30', 'M', 'Avenida Verano 77', '555-1616', 'raul.ortiz@example.com', 15, 'Radiólogo');
+
+INSERT INTO Laboratorios (Nombre, Direccion, Telefono, Correo) VALUES
+('Lab Uno', 'Calle Falsa 456', '555-2345', 'contacto@labuno.com'),
+('Lab Dos', 'Avenida Siempre Viva 123', '555-3456', 'contacto@labdos.com'),
+('Lab Tres', 'Boulevard Los Angeles 789', '555-4567', 'contacto@labtres.com'),
+('Lab Cuatro', 'Calle de la Rosa 101', '555-5678', 'contacto@labcuatro.com'),
+('Lab Cinco', 'Avenida Central 202', '555-6789', 'contacto@labcinco.com'),
+('Lab Seis', 'Calle Luna 303', '555-7890', 'contacto@labseis.com'),
+('Lab Siete', 'Avenida Sol 404', '555-8901', 'contacto@labsiete.com'),
+('Lab Ocho', 'Calle Estrella 505', '555-9012', 'contacto@labocho.com'),
+('Lab Nueve', 'Boulevard Oeste 606', '555-0123', 'contacto@labnueve.com'),
+('Lab Diez', 'Avenida Este 707', '555-1234', 'contacto@labdiez.com'),
+('Lab Once', 'Calle Norte 808', '555-2345', 'contacto@labonce.com'),
+('Lab Doce', 'Avenida Sur 909', '555-3456', 'contacto@labdoce.com'),
+('Lab Trece', 'Boulevard Primavera 1010', '555-4567', 'contacto@labtrece.com'),
+('Lab Catorce', 'Calle Invierno 1111', '555-5678', 'contacto@labcatorce.com'),
+('Lab Quince', 'Avenida Verano 1212', '555-6789', 'contacto@labquince.com');
+
+INSERT INTO Tratamientos (Nombre, Descripcion) VALUES
+('Tratamiento A', 'Descripción del Tratamiento A'),
+('Tratamiento B', 'Descripción del Tratamiento B'),
+('Tratamiento C', 'Descripción del Tratamiento C'),
+('Tratamiento D', 'Descripción del Tratamiento D'),
+('Tratamiento E', 'Descripción del Tratamiento E'),
+('Tratamiento F', 'Descripción del Tratamiento F'),
+('Tratamiento G', 'Descripción del Tratamiento G'),
+('Tratamiento H', 'Descripción del Tratamiento H'),
+('Tratamiento I', 'Descripción del Tratamiento I'),
+('Tratamiento J', 'Descripción del Tratamiento J'),
+('Tratamiento K', 'Descripción del Tratamiento K'),
+('Tratamiento L', 'Descripción del Tratamiento L'),
+('Tratamiento M', 'Descripción del Tratamiento M'),
+('Tratamiento N', 'Descripción del Tratamiento N'),
+('Tratamiento O', 'Descripción del Tratamiento O');
+
+INSERT INTO Medicamentos (Nombre, Descripcion, Precio) VALUES
+('Medicamento A', 'Descripción del Medicamento A', 10.00),
+('Medicamento B', 'Descripción del Medicamento B', 20.00),
+('Medicamento C', 'Descripción del Medicamento C', 30.00),
+('Medicamento D', 'Descripción del Medicamento D', 40.00),
+('Medicamento E', 'Descripción del Medicamento E', 50.00),
+('Medicamento F', 'Descripción del Medicamento F', 60.00),
+('Medicamento G', 'Descripción del Medicamento G', 70.00),
+('Medicamento H', 'Descripción del Medicamento H', 80.00),
+('Medicamento I', 'Descripción del Medicamento I', 90.00),
+('Medicamento J', 'Descripción del Medicamento J', 100.00),
+('Medicamento K', 'Descripción del Medicamento K', 110.00),
+('Medicamento L', 'Descripción del Medicamento L', 120.00),
+('Medicamento M', 'Descripción del Medicamento M', 130.00),
+('Medicamento N', 'Descripción del Medicamento N', 140.00),
+('Medicamento O', 'Descripción del Medicamento O', 150.00);
+
+INSERT INTO Citas (PacienteID, MedicoID, FechaHora, Motivo) VALUES
+(1, 1, '2023-01-01 09:00', 'Revisión General'),
+(2, 2, '2023-01-02 10:00', 'Chequeo Neurológico'),
+(3, 3, '2023-01-03 11:00', 'Consulta Pediátrica'),
+(4, 4, '2023-01-04 12:00', 'Consulta Dermatológica'),
+(5, 5, '2023-01-05 13:00', 'Revisión Oftalmológica'),
+(6, 6, '2023-01-06 14:00', 'Chequeo Ginecológico'),
+(7, 7, '2023-01-07 15:00', 'Consulta Psiquiátrica'),
+(8, 8, '2023-01-08 16:00', 'Consulta Oncológica'),
+(9, 9, '2023-01-09 17:00', 'Consulta Traumatológica'),
+(10, 10, '2023-01-10 18:00', 'Consulta Quirúrgica'),
+(11, 11, '2023-01-11 09:00', 'Chequeo Interno'),
+(12, 12, '2023-01-12 10:00', 'Consulta Urológica'),
+(13, 13, '2023-01-13 11:00', 'Consulta Endocrinológica'),
+(14, 14, '2023-01-14 12:00', 'Consulta Neumológica'),
+(15, 15, '2023-01-15 13:00', 'Consulta Reumatológica');
+
+INSERT INTO Facturas (PacienteID, Fecha, MontoTotal, Descripcion) VALUES
+(1, '2023-02-01', 150.00, 'Consulta General'),
+(2, '2023-02-02', 200.00, 'Chequeo Neurológico'),
+(3, '2023-02-03', 100.00, 'Consulta Pediátrica'),
+(4, '2023-02-04', 250.00, 'Consulta Dermatológica'),
+(5, '2023-02-05', 300.00, 'Revisión Oftalmológica'),
+(6, '2023-02-06', 150.00, 'Chequeo Ginecológico'),
+(7, '2023-02-07', 400.00, 'Consulta Psiquiátrica'),
+(8, '2023-02-08', 350.00, 'Consulta Oncológica'),
+(9, '2023-02-09', 450.00, 'Consulta Traumatológica'),
+(10, '2023-02-10', 500.00, 'Consulta Quirúrgica'),
+(11, '2023-02-11', 150.00, 'Chequeo Interno'),
+(12, '2023-02-12', 200.00, 'Consulta Urológica'),
+(13, '2023-02-13', 100.00, 'Consulta Endocrinológica'),
+(14, '2023-02-14', 250.00, 'Consulta Neumológica'),
+(15, '2023-02-15', 300.00, 'Consulta Reumatológica');
+
+INSERT INTO Hospitalizaciones (PacienteID, MedicoID, FechaIngreso, FechaAlta, Motivo) VALUES
+(1, 1, '2023-03-01 08:00', '2023-03-05', 'Observación General'),
+(2, 2, '2023-03-02 09:00', '2023-03-06', 'Tratamiento Neurológico'),
+(3, 3, '2023-03-03 10:00', '2023-03-07', 'Tratamiento Pediátrico'),
+(4, 4, '2023-03-04 11:00', '2023-03-08', 'Tratamiento Dermatológico'),
+(5, 5, '2023-03-05 12:00', '2023-03-09', 'Cirugía Oftalmológica'),
+(6, 6, '2023-03-06 13:00', '2023-03-10', 'Observación Ginecológica'),
+(7, 7, '2023-03-07 14:00', '2023-03-11', 'Tratamiento Psiquiátrico'),
+(8, 8, '2023-03-08 15:00', '2023-03-12', 'Tratamiento Oncológico'),
+(9, 9, '2023-03-09 16:00', '2023-03-13', 'Tratamiento Traumatológico'),
+(10, 10, '2023-03-10 17:00', '2023-03-14', 'Cirugía General'),
+(11, 11, '2023-03-11 18:00', '2023-03-15', 'Tratamiento Interno'),
+(12, 12, '2023-03-12 19:00', '2023-03-16', 'Tratamiento Urológico'),
+(13, 13, '2023-03-13 20:00', '2023-03-17', 'Tratamiento Endocrinológico'),
+(14, 14, '2023-03-14 21:00', '2023-03-18', 'Tratamiento Neumológico'),
+(15, 15, '2023-03-15 22:00', '2023-03-19', 'Tratamiento Reumatológico');
+
+INSERT INTO Cirugias (PacienteID, MedicoID, FechaHora, TipoCirugia, Descripcion) VALUES
+(1, 1, '2023-04-01', 'Cirugía Cardiaca', 'Bypass Coronario'),
+(2, 2, '2023-04-02', 'Cirugía Neurológica', 'Resección de Tumor'),
+(3, 3, '2023-04-03', 'Cirugía Pediátrica', 'Apendicectomía'),
+(4, 4, '2023-04-04', 'Cirugía Dermatológica', 'Extracción de Quiste'),
+(5, 5, '2023-04-05', 'Cirugía Oftalmológica', 'Corrección de Cataratas'),
+(6, 6, '2023-04-06', 'Cirugía Ginecológica', 'Histerectomía'),
+(7, 7, '2023-04-07', 'Cirugía Psiquiátrica', 'Estimulación Cerebral Profunda'),
+(8, 8, '2023-04-08', 'Cirugía Oncológica', 'Mastectomía'),
+(9, 9, '2023-04-09', 'Cirugía Traumatológica', 'Reparación de Ligamentos'),
+(10, 10, '2023-04-10', 'Cirugía General', 'Colecistectomía'),
+(11, 11, '2023-04-11', 'Cirugía Interna', 'Herniorrafia'),
+(12, 12, '2023-04-12', 'Cirugía Urológica', 'Prostatectomía'),
+(13, 13, '2023-04-13', 'Cirugía Endocrinológica', 'Tiroidectomía'),
+(14, 14, '2023-04-14', 'Cirugía Neumológica', 'Lobectomía Pulmonar'),
+(15, 15, '2023-04-15', 'Cirugía Reumatológica', 'Reemplazo de Cadera');
+
+INSERT INTO ResultadosLaboratorio (PacienteID, MedicoID, LaboratorioID, Fecha, TipoPrueba, Resultados) VALUES
+(1, 1, 1, '2023-05-01', 'Análisis de Sangre', 'Resultados Normales'),
+(2, 2, 2, '2023-05-02', 'Resonancia Magnética', 'Sin Anormalidades'),
+(3, 3, 3, '2023-05-03', 'Radiografía', 'Fractura Detectada'),
+(4, 4, 4, '2023-05-04', 'Ecografía', 'Resultados Normales'),
+(5, 5, 5, '2023-05-05', 'Tomografía', 'Resultados Normales'),
+(6, 6, 6, '2023-05-06', 'Análisis de Orina', 'Resultados Normales'),
+(7, 7, 7, '2023-05-07', 'Electrocardiograma', 'Resultados Normales'),
+(8, 8, 8, '2023-05-08', 'Biopsia', 'Resultados Normales'),
+(9, 9, 9, '2023-05-09', 'Prueba de Esfuerzo', 'Resultados Normales'),
+(10, 10, 10, '2023-05-10', 'Análisis de Sangre', 'Anemia Detectada'),
+(11, 11, 11, '2023-05-11', 'Resonancia Magnética', 'Tumor Detectado'),
+(12, 12, 12, '2023-05-12', 'Radiografía', 'Resultados Normales'),
+(13, 13, 13, '2023-05-13', 'Ecografía', 'Quiste Detectado'),
+(14, 14, 14, '2023-05-14', 'Tomografía', 'Resultados Normales'),
+(15, 15, 15, '2023-05-15', 'Análisis de Orina', 'Infección Detectada');
+
+INSERT INTO Prescripciones (CitaID, MedicamentoID, Dosis, Duracion, Instrucciones) VALUES
+(1, 1, '1 pastilla', 7, 'Tomar una pastilla diaria'),
+(2, 2, '2 pastillas', 10, 'Tomar dos pastillas diarias'),
+(3, 3, '1 cápsula', 5, 'Tomar una cápsula cada 12 horas'),
+(4, 4, '1 pastilla', 14, 'Tomar una pastilla diaria'),
+(5, 5, '1 jarabe', 7, 'Tomar una cucharada de jarabe cada 8 horas'),
+(6, 6, '1 pastilla', 7, 'Tomar una pastilla diaria'),
+(7, 7, '1 cápsula', 10, 'Tomar una cápsula cada 8 horas'),
+(8, 8, '1 pastilla', 7, 'Tomar una pastilla diaria'),
+(9, 9, '1 jarabe', 5, 'Tomar una cucharada de jarabe cada 6 horas'),
+(10, 10, '1 pastilla', 14, 'Tomar una pastilla diaria'),
+(11, 11, '2 cápsulas', 10, 'Tomar dos cápsulas diarias'),
+(12, 12, '1 pastilla', 7, 'Tomar una pastilla diaria'),
+(13, 13, '1 jarabe', 5, 'Tomar una cucharada de jarabe cada 4 horas'),
+(14, 14, '1 cápsula', 10, 'Tomar una cápsula cada 6 horas'),
+(15, 15, '1 pastilla', 7, 'Tomar una pastilla diaria');
+
+INSERT INTO Pagos (FacturaID, FechaPago, MontoPagado, MetodoPago) VALUES
+(1, '2023-06-01', 150.00, 'Tarjeta de Crédito'),
+(2, '2023-06-02', 200.00, 'Efectivo'),
+(3, '2023-06-03', 100.00, 'Tarjeta de Débito'),
+(4, '2023-06-04', 250.00, 'Transferencia Bancaria'),
+(5, '2023-06-05', 300.00, 'Tarjeta de Crédito'),
+(6, '2023-06-06', 150.00, 'Efectivo'),
+(7, '2023-06-07', 400.00, 'Tarjeta de Débito'),
+(8, '2023-06-08', 350.00, 'Transferencia Bancaria'),
+(9, '2023-06-09', 450.00, 'Tarjeta de Crédito'),
+(10, '2023-06-10', 500.00, 'Efectivo'),
+(11, '2023-06-11', 150.00, 'Tarjeta de Débito'),
+(12, '2023-06-12', 200.00, 'Transferencia Bancaria'),
+(13, '2023-06-13', 100.00, 'Tarjeta de Crédito'),
+(14, '2023-06-14', 250.00, 'Efectivo'),
+(15, '2023-06-15', 300.00, 'Tarjeta de Débito');
+
+
+
+
+
+
+
+-- /// CONSULTAS SOBRE CASOS DE USO - SIMPLES.
+-- Obtener todos los pacientes.
+SELECT * FROM Pacientes;
+-- Obtener todos los departamentos.
+SELECT * FROM Departamentos;
+-- Obtener todos los médicos.
+SELECT * FROM Medicos;
+
+-- Obtener todos los pacientes masculinos
+SELECT * FROM Pacientes
+WHERE Genero = 'M';
+
+-- Obtener médicos por especialidad
+SELECT * FROM Medicos
+WHERE Especialidad = 'Cardiología';
+
+-- Obtener el número total de pacientes.
+SELECT COUNT(*) AS TotalPacientes
+FROM Pacientes;
+
+-- Obtener el número total de citas por médico.
+SELECT MedicoID, COUNT(*) AS TotalCitas
+FROM Citas
+GROUP BY MedicoID;
+
+-- Obtener los pacientes que tienen más de una cita.
+SELECT p.ID, p.Nombre, p.Apellido
+FROM Pacientes p
+JOIN Citas c ON p.ID = c.PacienteID
+GROUP BY p.ID, p.Nombre, p.Apellido
+HAVING COUNT(c.ID) > 1; --Todos tienen solo 1 cita, para confirmar cambiar > por =.
+
+-- Obtener los médicos que han realizado cirugías en un determinado periodo.
+SELECT m.ID, m.Nombre, m.Apellido
+FROM Medicos m
+WHERE m.ID 
+IN (SELECT MedicoID FROM Cirugias WHERE FechaHora BETWEEN '2023-01-01' AND '2023-12-31');
+
+-- Actualizar la dirección de un paciente.
+UPDATE Pacientes
+SET Direccion = 'Nueva Dirección'
+WHERE ID = 1;
+
+-- Actualizar el precio de un medicamento.
+UPDATE Medicamentos
+SET Precio = 50.00
+WHERE ID = 1;
+
+-- Eliminar un paciente.
+DELETE FROM Pacientes
+WHERE ID = 1;
+
+-- Eliminar una cita.
+DELETE FROM Citas
+WHERE ID = 1;
+
+
+
+
+
+
+
+
+
+-- /// CONSULTAS SOBRE CASOS DE USO - AVANZADAS.
+-- Obtener todas las citas con información del paciente y del médico.
+SELECT 
+	c.ID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+    m.Nombre AS MedicoNombre,
+	m.Apellido AS MedicoApellido, 
+    c.FechaHora,
+	c.Motivo
+FROM Citas c
+JOIN Pacientes p ON c.PacienteID = p.ID
+JOIN Medicos m ON c.MedicoID = m.ID;
+
+-- Obtener todas las hospitalizaciones con información del paciente y del médico.
+SELECT 
+	h.ID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+    m.Nombre AS MedicoNombre,
+	m.Apellido AS MedicoApellido, 
+    h.FechaIngreso,
+	h.FechaAlta,
+	h.Motivo
+FROM Hospitalizaciones h
+JOIN Pacientes p ON h.PacienteID = p.ID
+JOIN Medicos m ON h.MedicoID = m.ID;
+
+--  Obtener los pacientes con sus últimos resultados de laboratorio.
+SELECT 
+	p.ID, p.Nombre,
+	p.Apellido,
+	rl.TipoPrueba,
+	rl.Resultados,
+	rl.Fecha
+FROM Pacientes p
+JOIN ResultadosLaboratorio rl 
+ON p.ID = rl.PacienteID
+WHERE rl.Fecha = (SELECT MAX(Fecha) 
+FROM ResultadosLaboratorio 
+WHERE PacienteID = p.ID);
+
+-- Obtener el monto total facturado por paciente.
+SELECT 
+	p.ID,
+	p.Nombre,
+	p.Apellido,
+SUM(f.MontoTotal) AS MontoTotalFacturado
+FROM Pacientes p
+JOIN Facturas f 
+ON p.ID = f.PacienteID
+GROUP BY p.ID, p.Nombre, p.Apellido;
+
+
+
+
+
+
+
+
+
+
+
+
+
+-- /// VISTAS SQL DE ESTA BD.
+-- Vista de Citas con Información Completa.
+CREATE VIEW Citas_Informacion_Completa
+AS
+SELECT 
+	c.ID AS CitaID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+    m.Nombre AS MedicoNombre,
+	m.Apellido AS MedicoApellido, 
+    c.FechaHora,
+	c.Motivo
+FROM Citas c
+JOIN Pacientes p ON c.PacienteID = p.ID
+JOIN Medicos m ON c.MedicoID = m.ID;
+
+SELECT * FROM Citas_Informacion_Completa;
+
+-- Vista de Facturas con Información del Paciente.
+CREATE VIEW Facturas_Con_Paciente
+AS
+SELECT 
+	f.ID AS FacturaID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+	f.Fecha,
+	f.MontoTotal,
+	f.Descripcion
+FROM Facturas f
+JOIN Pacientes p ON f.PacienteID = p.ID;
+
+SELECT * FROM Facturas_Con_Paciente;
+
+-- Vista de Resultados de Laboratorio.
+CREATE VIEW Resultados_del_Laboratorio
+AS
+SELECT 
+	r.ID AS ResultadoID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+	l.Nombre AS LaboratorioNombre,
+	r.Fecha,
+	r.TipoPrueba,
+	r.Resultados
+FROM ResultadosLaboratorio r
+JOIN Pacientes p ON r.PacienteID = p.ID
+JOIN Laboratorios l ON r.LaboratorioID = l.ID;
+
+SELECT * FROM Resultados_del_Laboratorio;
+
+-- Vista de las hospitalizaciones con información del paciente y del médico.
+CREATE VIEW Hospitalizaciones_con_Informacion_Paciente
+AS
+SELECT 
+	h.ID,
+	p.Nombre AS PacienteNombre,
+	p.Apellido AS PacienteApellido, 
+    m.Nombre AS MedicoNombre,
+	m.Apellido AS MedicoApellido, 
+    h.FechaIngreso,
+	h.FechaAlta,
+	h.Motivo
+FROM Hospitalizaciones h
+JOIN Pacientes p ON h.PacienteID = p.ID
+JOIN Medicos m ON h.MedicoID = m.ID;
+
+SELECT * FROM Hospitalizaciones_con_Informacion_Paciente;
+
+-- Vista del monto total facturado por paciente.
+CREATE VIEW Monto_Total_Pacientes
+AS
+SELECT 
+	p.ID,
+	p.Nombre,
+	p.Apellido,
+SUM(f.MontoTotal) AS MontoTotalFacturado
+FROM Pacientes p
+JOIN Facturas f 
+ON p.ID = f.PacienteID
+GROUP BY p.ID, p.Nombre, p.Apellido;
+
+SELECT * FROM Monto_Total_Pacientes;
+
+
+
+
+
+
+
+
+
+-- /// PROCEDIMIENTOS DE ALMACENADO DE ESTA BD.
+--	Todos los objetos enlistados de la base de datos.
+EXEC sp_help
+--	Informacion especifica a cerca de un objeto.
+EXEC sp_help 'Pacientes'
+--	Cambia el nombre de un objeto de la base de datos.
+EXEC sp_rename 'Pacientes', 'Paciente'
+
+-- Procedimiento para Buscar Pacientes por Nombre.
+CREATE PROCEDURE spBuscar_Pacientes
+    @NombreBuscado VARCHAR(100)
+AS
+BEGIN
+    SELECT ID, Nombre, Apellido, FechaNacimiento, Genero, Direccion, Telefono, Correo, SeguroMedico, NumeroSeguroSocial
+    FROM Pacientes
+    WHERE Nombre LIKE '%' + @NombreBuscado + '%' 
+       OR Apellido LIKE '%' + @NombreBuscado + '%';
+END;
+
+-- Procedimiento para Buscar Médicos por Nombre.
+CREATE PROCEDURE spBuscar_Medicos
+    @NombreBuscado VARCHAR(100)
+AS
+BEGIN
+    SELECT ID, Nombre, Apellido, Especialidad, Telefono, Correo
+    FROM Medicos
+    WHERE Nombre LIKE '%' + @NombreBuscado + '%' 
+       OR Apellido LIKE '%' + @NombreBuscado + '%';
+END;
+
+
+-- Procedimiento para Insertar un Nuevo Paciente.
+CREATE PROCEDURE spInsertar_Nuevo_Paciente
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @FechaNacimiento DATE,
+    @Genero CHAR(1),
+    @Direccion VARCHAR(255),
+    @Telefono VARCHAR(20),
+    @Correo VARCHAR(100),
+    @SeguroMedico VARCHAR(100),
+    @NumeroSeguroSocial VARCHAR(20)
+AS
+BEGIN
+    INSERT INTO Pacientes (Nombre, Apellido, FechaNacimiento, Genero, Direccion, Telefono, Correo, SeguroMedico, NumeroSeguroSocial)
+    VALUES (@Nombre, @Apellido, @FechaNacimiento, @Genero, @Direccion, @Telefono, @Correo, @SeguroMedico, @NumeroSeguroSocial);
+END;
+
+-- Procedimiento para Actualizar Información de un Paciente.
+CREATE PROCEDURE spActualizar_Paciente
+    @ID INT,
+    @Nombre VARCHAR(100),
+    @Apellido VARCHAR(100),
+    @FechaNacimiento DATE,
+    @Genero CHAR(1),
+    @Direccion VARCHAR(255),
+    @Telefono VARCHAR(20),
+    @Correo VARCHAR(100),
+    @SeguroMedico VARCHAR(100),
+    @NumeroSeguroSocial VARCHAR(20)
+AS
+BEGIN
+    UPDATE Pacientes
+    SET Nombre = @Nombre,
+        Apellido = @Apellido,
+        FechaNacimiento = @FechaNacimiento,
+        Genero = @Genero,
+        Direccion = @Direccion,
+        Telefono = @Telefono,
+        Correo = @Correo,
+        SeguroMedico = @SeguroMedico,
+        NumeroSeguroSocial = @NumeroSeguroSocial
+    WHERE ID = @ID;
+END;
+
+
+-- Procedimiento para Obtener Pacientes con Más de una Cita.
+CREATE PROCEDURE spObtener_Pacientes_ConMasDeUna_Cita
+AS
+BEGIN
+    SELECT p.ID, p.Nombre, p.Apellido
+    FROM Pacientes p
+    JOIN Citas c ON p.ID = c.PacienteID
+    GROUP BY p.ID, p.Nombre, p.Apellido
+    HAVING COUNT(c.ID) > 1;
+END;
+
+-- Procedimiento para Generar una Factura para un Paciente.
+CREATE PROCEDURE spGenerar_Factura_Paciente
+    @PacienteID INT,
+    @Fecha DATETIME,
+    @MontoTotal DECIMAL(10, 2),
+    @Descripcion TEXT
+AS
+BEGIN
+    INSERT INTO Facturas (PacienteID, Fecha, MontoTotal, Descripcion)
+    VALUES (@PacienteID, @Fecha, @MontoTotal, @Descripcion);
+END;
+
+-- Procedimiento para Insertar una Prescripción.
+CREATE PROCEDURE spInsertar_Prescripcion
+    @CitaID INT,
+    @MedicamentoID INT,
+    @Dosis VARCHAR(100),
+    @Duracion INT,
+    @Instrucciones TEXT
+AS
+BEGIN
+    INSERT INTO Prescripciones (CitaID, MedicamentoID, Dosis, Duracion, Instrucciones)
+    VALUES (@CitaID, @MedicamentoID, @Dosis, @Duracion, @Instrucciones);
+END;
+
+
+
+
+
+
+
+
+
+
+-- /// TRIGGERS DE AUDITORIA DE LA BASE DE DATOS.
+-- Trigger para Auditar Inserciones en la Tabla Pacientes.
+-- La abla de auditoría para pacientes.
+CREATE TABLE Auditoria_Pacientes (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    PacienteID INT,
+    Accion VARCHAR(50),
+    Fecha DATETIME DEFAULT GETDATE(),
+    Usuario NVARCHAR(100)
+);
+
+-- Trigger para auditar inserciones en la tabla Pacientes
+CREATE TRIGGER trg_AuditoriaPacientes_Insert
+ON Pacientes
+AFTER INSERT
+AS
+BEGIN
+    INSERT INTO AuditoriaPacientes (PacienteID, Accion, Usuario)
+    SELECT i.ID, 'Inserción', SYSTEM_USER
+    FROM inserted i;
+END;
+
+-- Trigger para Auditar Actualizaciones en la Tabla Medicos.
+-- La tabla de auditoría para médicos.
+CREATE TABLE AuditoriaMedicos (
+    ID INT IDENTITY(1,1) PRIMARY KEY,
+    MedicoID INT,
+    Accion VARCHAR(50),
+    Fecha DATETIME DEFAULT GETDATE(),
+    Usuario NVARCHAR(100),
+    DatosAntiguos NVARCHAR(MAX),
+    DatosNuevos NVARCHAR(MAX)
+);
+
+-- Trigger para auditar actualizaciones en la tabla Medicos.
+CREATE TRIGGER trg_AuditoriaMedicos_Update
+ON Medicos
+AFTER UPDATE
+AS
+BEGIN
+    INSERT INTO AuditoriaMedicos (MedicoID, Accion, Usuario, DatosAntiguos, DatosNuevos)
+    SELECT
+        i.ID,
+        'Actualización',
+        SYSTEM_USER,
+        CONCAT('Nombre: ', d.Nombre, ', Apellido: ', d.Apellido, ', Especialidad: ', d.Especialidad),
+        CONCAT('Nombre: ', i.Nombre, ', Apellido: ', i.Apellido, ', Especialidad: ', i.Especialidad)
+    FROM inserted i
+    JOIN deleted d ON i.ID = d.ID;
+END;
+
+-- Trigger para Verificar el Precio de Medicamentos antes de Insertar o Actualizar.
+-- Trigger para validar el precio de medicamentos.
+CREATE TRIGGER trg_ValidarPrecioMedicamento
+ON Medicamentos
+AFTER INSERT, UPDATE
+AS
+BEGIN
+    IF EXISTS (
+        SELECT *
+        FROM inserted
+        WHERE Precio < 0
+    )
+    BEGIN
+        RAISERROR('El precio del medicamento no puede ser menor que 0.', 16, 1);
+        ROLLBACK TRANSACTION;
+    END;
+END;
+
+-- Keury Ramirez - 2023-1101. All Rights Reserved :).
