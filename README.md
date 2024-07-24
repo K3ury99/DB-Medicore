@@ -1,4 +1,4 @@
-# 🚀 BD-MEDICORE Hospital Management System.
+# 🚀 DB-MEDICORE Hospital Management System.
 
 Welcome to the MEDICORE system documentation, an innovative solution designed to revolutionize hospital management through advanced database integration. MEDICORE optimizes hospital administration with SQL Server for structured data, MongoDB for flexible denormalized data, and Redis for ultra-fast in-memory access. It ensures robust referential integrity, efficient administration, superior query optimization, dynamic error management, and effective scalability. Additionally, the documentation covers security, maintenance, and backup strategies. Discover how MEDICORE transforms the efficiency and effectiveness of healthcare institutions!
 
